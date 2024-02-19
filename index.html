@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <style>
+        body {
+            background-color: rgb(16, 16, 16);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background: linear-gradient(to bottom right, rgb(0, 72, 255), rgb(255, 0, 43));
+            padding: 50px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            width: 30%;
+        }
+
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .subheader {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .password {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .copy-icon {
+            cursor: pointer;
+            background-color: #0b0b0b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            margin-bottom: 10px;
+        }
+
+        .generate-btn {
+            background-color: #0b0b0b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* New styles for the smaller card */
+        .smaller-card {
+            background-color: #eeeeee;
+            padding: 50px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .smaller-card-content {
+            color: rgb(13, 13, 13);
+        }
+
+        /* New styles for the generated password field */
+        .generated-password-field {
+            background-color: #0b0b0b;
+            padding: 30px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+
+        .generated-password-field span {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="header">Password Generator</h1>
+        <p class="subheader">Generate a password blazingly fast!</p>
+        <div class="smaller-card">
+            <div class="smaller-card-content">
+                <div class="password">
+                    <div class="generated-password-field">
+                        <span id="generated-password">-</span>
+                    </div>
+                    <br>
+                    <p class="copy-icon" onclick="copyPassword()">📋 Copy</p>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <label for="length">Length:</label>
+                        <input type="range" id="length" min="8" max="20" value="12">
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="lowercase" checked>
+                        <label for="lowercase">Lower Case</label>
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="uppercase" checked>
+                        <label for="uppercase">Upper Case</label>
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="numbers" checked>
+                        <label for="numbers">Numbers</label>
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="symbols" checked>
+                        <label for="symbols">Symbols</label>
+                    </div>
+                </div>
+                <button class="generate-btn" onclick="generatePassword()">♾️ Generate</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generatePassword() {
+            var length = document.getElementById("length").value;
+            var lowercase = document.getElementById("lowercase").checked;
+            var uppercase = document.getElementById("uppercase").checked;
+            var numbers = document.getElementById("numbers").checked;
+            var symbols = document.getElementById("symbols").checked;
+
+            var generatedPassword = generateRandomPassword(length, lowercase, uppercase, numbers, symbols);
+
+            if (generatedPassword.length == 0) {
+                generatedPassword = "-"
+                alert("⚠️ Please select at least one character type!");
+            }
+
+            document.getElementById("generated-password").textContent = generatedPassword;
+        }
+
+        function copyPassword() {
+            var password = document.getElementById("generated-password").textContent;
+            if (password.length == 0) return;
+
+            var textarea = document.createElement("textarea");
+            textarea.value = password;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+
+            alert("✅ Password copied to clipboard!");
+        }
+
+        function generateRandomPassword(length, lowercase, uppercase, numbers, symbols) {
+            var charset = "";
+            if (lowercase) charset += "abcdefghijklmnopqrstuvwxyz";
+            if (uppercase) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (numbers) charset += "0123456789";
+            if (symbols) charset += "!@#$%^&*()_+~`|}{[]\:;?><,./-=";
+            if (charset.length == 0) return "";
+
+            var generatedPassword = "";
+            for (var i = 0; i < length; i++) {
+                var randomIndex = Math.floor(Math.random() * charset.length);
+                generatedPassword += charset[randomIndex];
+            }
+
+            return generatedPassword;
+        }
+    </script>
+
+
+</body>
+
+</html>
