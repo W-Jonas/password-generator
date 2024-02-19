@@ -1,4 +1,4 @@
-![alt text](https://github.com/procurer/password-generator/blob/main/preview.png?raw=true)
+![alt text](https://github.com/procurer/password-generator/blob/main/preview-new.png?raw=true)
 
 
 # About
